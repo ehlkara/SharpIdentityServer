@@ -1,4 +1,6 @@
 ﻿using IdentityServer4.Models;
+using IdentityServer4.Test;
+using System.Security.Claims;
 
 namespace IdentityServer.AuthServer
 {
@@ -25,6 +27,36 @@ namespace IdentityServer.AuthServer
                 new ApiScope("api2.read","API1 read permission"),
                 new ApiScope("api2.write","API1 write permission"),
                 new ApiScope("api2.update","API1 update permission"),
+            };
+        }
+
+        public static IEnumerable<IdentityResource> GetIdentityResources()
+        {
+            return new List<IdentityResource>()
+            {
+                new IdentityResources.OpenId(), //subId
+                new IdentityResources.Profile(),
+            };
+        }
+
+        public static IEnumerable<TestUser> GetUsers()
+        {
+            return new List<TestUser>()
+            {
+                new TestUser {
+                    SubjectId="1",Username="ehlkara",Password="password", Claims= new List<Claim>()
+                    {
+                        new Claim("given_name","Ehlullah"),
+                        new Claim("family_name","Karakurt")
+                    },
+                },
+                new TestUser {
+                    SubjectId="2",Username="ahmet16",Password="password", Claims= new List<Claim>()
+                    {
+                        new Claim("given_name","Ahmet"),
+                        new Claim("family_name","Karakurt")
+                    },
+                },
             };
         }
 
