@@ -1,5 +1,45 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+@using Microsoft.AspNetCore.Authentication
 <h3>Only registered users can view this page.</h3>
+
+<h3>Claim Datas</h3>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Claim Type</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in User.Claims)
+            {
+                <tr>
+                    <td>@item.Type</td>
+                    <td>@item.Value</td>
+                </tr>
+            }
+    </tbody>
+</table>
+
+<h4>Authentication Values</h4>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Auth property key</th>
+            <th>Auth property value</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in (await Context.AuthenticateAsync()).Properties.Items)
+        {
+            <tr>
+                <td>@item.Key</td>
+                <td>@item.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
