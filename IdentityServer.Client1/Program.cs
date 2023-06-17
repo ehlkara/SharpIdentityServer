@@ -13,6 +13,7 @@ builder.Services.AddAuthentication(options =>
     opts.ClientSecret = "secret";
     opts.ResponseType = "code id_token";
     opts.GetClaimsFromUserInfoEndpoint = true;
+    opts.SaveTokens = true;
 });
 
 
