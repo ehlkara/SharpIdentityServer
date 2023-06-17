@@ -12,6 +12,7 @@ builder.Services.AddAuthentication(options =>
     opts.ClientId = "Client1-Mvc";
     opts.ClientSecret = "secret";
     opts.ResponseType = "code id_token";
+    opts.GetClaimsFromUserInfoEndpoint = true;
 });
 
 
