@@ -1,3 +1,5 @@
+using IdentityServer4;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -5,7 +7,21 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
     options.DefaultChallengeScheme = "oidc";
-}).AddCookie("Cookies").AddOpenIdConnect("oidc", opts =>
+}).AddCookie("Cookies").AddGoogle("Google", options =>
+{
+    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+    options.ClientId = "727823634857-qqk9poohpoihrebuhbk1js76hp09cc82.apps.googleusercontent.com";
+    options.ClientSecret = "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";
+}).AddFacebook("Facebook", options =>
+{
+    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+
+    options.ClientId = "217164231260044";
+    options.ClientSecret = "f1a459e448da15cd954fcad271faa1f5";
+    options.CallbackPath = "/signin-facebook";
+    options.SaveTokens = true;
+}).AddOpenIdConnect("oidc", opts =>
 {
     opts.SignInScheme = "Cookies";
     opts.Authority = "https://localhost:7183";
