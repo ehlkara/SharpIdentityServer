@@ -43,6 +43,13 @@ namespace IdentityServer.AuthServer
                     DisplayName = "Country And City",
                     Description = "User's country and city information",
                     UserClaims = new[] {"country","city"}
+                },
+                new IdentityResource()
+                {
+                    Name = "Roles",
+                    DisplayName = "Roles",
+                    Description = "User roles",
+                    UserClaims = new[] {"role"}
                 }
             };
         }
@@ -57,7 +64,8 @@ namespace IdentityServer.AuthServer
                         new Claim("given_name","Ehlullah"),
                         new Claim("family_name","Karakurt"),
                         new Claim("country","Turkey"),
-                        new Claim("city","Istanbul")
+                        new Claim("city","Istanbul"),
+                        new Claim("role","admin")
                     },
                 },
                 new TestUser {
@@ -66,7 +74,8 @@ namespace IdentityServer.AuthServer
                         new Claim("given_name","Ahmet"),
                         new Claim("family_name","Karakurt"),
                         new Claim("country","Turkey"),
-                        new Claim("city","Sivas")
+                        new Claim("city","Sivas"),
+                        new Claim("role", "customer")
                     },
                 },
             };
@@ -104,7 +113,7 @@ namespace IdentityServer.AuthServer
                     AllowedScopes= {IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,"api1.read",
                         IdentityServerConstants.StandardScopes.OfflineAccess,
-                        "CountryAndCity"
+                        "CountryAndCity","Roles"
                     },
                     AccessTokenLifetime = 2*60*60,
                     AllowOfflineAccess = true,

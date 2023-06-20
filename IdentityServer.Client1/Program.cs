@@ -16,6 +16,8 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = "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";
     options.Scope.Add("CountryAndCity");
     options.Scope.Add("offline_access");
+    options.ClaimActions.MapUniqueJsonKey("country", "country");
+    options.ClaimActions.MapUniqueJsonKey("city", "city");
 }).AddFacebook("Facebook", options =>
 {
     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
@@ -36,8 +38,15 @@ builder.Services.AddAuthentication(options =>
     opts.Scope.Add("api1.read");
     opts.Scope.Add("offline_access");
     opts.Scope.Add("CountryAndCity");
+    opts.Scope.Add("Roles");
     opts.ClaimActions.MapUniqueJsonKey("country", "country");
     opts.ClaimActions.MapUniqueJsonKey("city", "city");
+    opts.ClaimActions.MapUniqueJsonKey("role", "role");
+
+    opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        RoleClaimType = "role",
+    };
 });
 
 

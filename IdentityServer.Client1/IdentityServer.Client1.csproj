@@ -14,13 +14,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.18" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.18" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Views\User\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\User\" />
   </ItemGroup>
 </Project>
