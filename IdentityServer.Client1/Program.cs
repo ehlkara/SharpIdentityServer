@@ -8,7 +8,10 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
     options.DefaultChallengeScheme = "oidc";
-}).AddCookie("Cookies").AddGoogle("Google", options =>
+}).AddCookie("Cookies", opts =>
+{
+    opts.AccessDeniedPath = "/Home/AccessDenied";
+}).AddGoogle("Google", options =>
 {
     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
