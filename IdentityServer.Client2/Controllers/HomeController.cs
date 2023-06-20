@@ -1,4 +1,5 @@
 ﻿using IdentityServer.Client2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -16,6 +17,12 @@ namespace IdentityServer.Client2.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [Authorize]
+        public IActionResult User() 
+        { 
+            return View(); 
         }
 
         public IActionResult Privacy()

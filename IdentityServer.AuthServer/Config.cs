@@ -121,6 +121,27 @@ namespace IdentityServer.AuthServer
                     RefreshTokenExpiration = TokenExpiration.Absolute,
                     AbsoluteRefreshTokenLifetime = (int)(DateTime.Now.AddDays(60) - DateTime.Now).TotalSeconds,
                     RequireConsent = true,
+                },
+                new Client()
+                {
+                    ClientId = "Client2-Mvc",
+                    RequirePkce = false,
+                    ClientName = "Client2-Mvc app application",
+                    ClientSecrets = new[] {new Secret("secret".Sha256())},
+                    AllowedGrantTypes= GrantTypes.Hybrid,
+                    RedirectUris = new List<string>() { "https://localhost:7135/signin-oidc", "https://localhost:7135/signin-facebook", "https://localhost:7135/signin-google", "https://localhost:7135/signin-apple" },
+                    PostLogoutRedirectUris = new List<string>() { "https://localhost:7135/signout-callback-oidc", "https://localhost:7135/signout-callback-facebook", "https://localhost:7135/signout-callback-google", "https://localhost:7135/signout-callback-apple"},
+                    AllowedScopes= {IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,"api1.read","api2.read",
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "CountryAndCity","Roles"
+                    },
+                    AccessTokenLifetime = 2*60*60,
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    RefreshTokenExpiration = TokenExpiration.Absolute,
+                    AbsoluteRefreshTokenLifetime = (int)(DateTime.Now.AddDays(60) - DateTime.Now).TotalSeconds,
+                    RequireConsent = false,
                 }
             };
         }
