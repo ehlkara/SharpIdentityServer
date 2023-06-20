@@ -1,10 +1,14 @@
 ﻿using IdentityModel.Client;
 using IdentityServer.Client1.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Newtonsoft.Json;
 
 namespace IdentityServer.Client1.Controllers
 {
+    [Authorize]
     public class ProductsController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -19,27 +23,9 @@ namespace IdentityServer.Client1.Controllers
             List<Product> products = new List<Product>();
             HttpClient httpClient = new HttpClient();
 
-            var disco = await httpClient.GetDiscoveryDocumentAsync("https://localhost:7183");
+            var accessToken = await HttpContext.GetTokenAsync(OpenIdConnectParameterNames.AccessToken);
 
-            if(disco.IsError)
-            {
-                // logging
-            }
-
-            ClientCredentialsTokenRequest clientCredentialsTokenRequest = new ClientCredentialsTokenRequest();
-
-            clientCredentialsTokenRequest.ClientId = _configuration["Client:ClientId"];
-            clientCredentialsTokenRequest.ClientSecret = _configuration["Client:ClientSecret"];
-            clientCredentialsTokenRequest.Address = disco.TokenEndpoint;
-
-            var token = await httpClient.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest);
-
-            if(token.IsError)
-            {
-                // logging
-            }
-
-            httpClient.SetBearerToken(token.AccessToken);
+            httpClient.SetBearerToken(accessToken);
 
             var response = await httpClient.GetAsync("https://localhost:7040/api/products/getproducts");
 
