@@ -37,6 +37,13 @@ namespace IdentityServer.AuthServer
             {
                 new IdentityResources.OpenId(), //subId
                 new IdentityResources.Profile(),
+                new IdentityResource()
+                {
+                    Name = "CountryAndCity",
+                    DisplayName = "Country And City",
+                    Description = "User's country and city information",
+                    UserClaims = new[] {"country","city"}
+                }
             };
         }
 
@@ -48,14 +55,18 @@ namespace IdentityServer.AuthServer
                     SubjectId="1",Username="ehlkara",Password="password", Claims= new List<Claim>()
                     {
                         new Claim("given_name","Ehlullah"),
-                        new Claim("family_name","Karakurt")
+                        new Claim("family_name","Karakurt"),
+                        new Claim("country","Turkey"),
+                        new Claim("city","Istanbul")
                     },
                 },
                 new TestUser {
                     SubjectId="2",Username="ahmet16",Password="password", Claims= new List<Claim>()
                     {
                         new Claim("given_name","Ahmet"),
-                        new Claim("family_name","Karakurt")
+                        new Claim("family_name","Karakurt"),
+                        new Claim("country","Turkey"),
+                        new Claim("city","Sivas")
                     },
                 },
             };
@@ -91,7 +102,10 @@ namespace IdentityServer.AuthServer
                     RedirectUris = new List<string>() { "https://localhost:7089/signin-oidc", "https://localhost:7089/signin-facebook", "https://localhost:7089/signin-google", "https://localhost:7089/signin-apple" },
                     PostLogoutRedirectUris = new List<string>() {"https://localhost:7089/signout-callback-oidc","https://localhost:7089/signout-callback-facebook","https://localhost:7089/signout-callback-google", "https://localhost:7089/signout-callback-apple"},
                     AllowedScopes= {IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,"api1.read",IdentityServerConstants.StandardScopes.OfflineAccess},
+                        IdentityServerConstants.StandardScopes.Profile,"api1.read",
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "CountryAndCity"
+                    },
                     AccessTokenLifetime = 2*60*60,
                     AllowOfflineAccess = true,
                     RefreshTokenUsage = TokenUsage.ReUse,
