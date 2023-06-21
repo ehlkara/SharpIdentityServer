@@ -1,11 +1,14 @@
 using IdentityServer.AuthServer;
 using IdentityServer.AuthServer.Models;
+using IdentityServer.AuthServer.Repository;
 using IdentityServer4;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddScoped<ICustomUserRepository, CustomUserRepository>();
+
 builder.Services.AddDbContext<CustomDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"));
