@@ -1,6 +1,6 @@
 ﻿using IdentityServer.AuthServer.Models;
 
-namespace IdentityServer.AuthServer.Services
+namespace IdentityServer.AuthServer.Repository
 {
     public interface ICustomUserRepository
     {
