@@ -1,6 +1,7 @@
 using IdentityServer.AuthServer;
 using IdentityServer.AuthServer.Models;
 using IdentityServer.AuthServer.Repository;
+using IdentityServer.AuthServer.Services;
 using IdentityServer4;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +19,9 @@ builder.Services.AddIdentityServer().AddInMemoryApiResources(Config.GetApiResour
     .AddInMemoryApiScopes(Config.GetApiScopes())
     .AddInMemoryClients(Config.GetClients())
     .AddInMemoryIdentityResources(Config.GetIdentityResources())
-    .AddTestUsers(Config.GetUsers().ToList())
-    .AddDeveloperSigningCredential();
+    //.AddTestUsers(Config.GetUsers().ToList())
+    .AddDeveloperSigningCredential()
+    .AddProfileService<CustomProfileService>();
 
 builder.Services.AddAuthentication()
     .AddGoogle("Google", options =>
