@@ -35,6 +35,7 @@ namespace IdentityServer.AuthServer
         {
             return new List<IdentityResource>()
             {
+                new IdentityResources.Email(),
                 new IdentityResources.OpenId(), //subId
                 new IdentityResources.Profile(),
                 new IdentityResource()
@@ -110,7 +111,7 @@ namespace IdentityServer.AuthServer
                     AllowedGrantTypes= GrantTypes.Hybrid,
                     RedirectUris = new List<string>() { "https://localhost:7089/signin-oidc", "https://localhost:7089/signin-facebook", "https://localhost:7089/signin-google", "https://localhost:7089/signin-apple" },
                     PostLogoutRedirectUris = new List<string>() {"https://localhost:7089/signout-callback-oidc","https://localhost:7089/signout-callback-facebook","https://localhost:7089/signout-callback-google", "https://localhost:7089/signout-callback-apple"},
-                    AllowedScopes= {IdentityServerConstants.StandardScopes.OpenId,
+                    AllowedScopes= {IdentityServerConstants.StandardScopes.Email,IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,"api1.read",
                         IdentityServerConstants.StandardScopes.OfflineAccess,
                         "CountryAndCity","Roles"
