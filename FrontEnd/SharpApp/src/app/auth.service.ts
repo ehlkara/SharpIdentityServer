@@ -12,7 +12,7 @@ export class AuthService {
     redirect_uri:'http://localhost:4200/callback',
     response_type:'code',
     scope:'openid profile email api1_read',
-    post_logout_redirect_uri:'https://localhost:4200'
+    post_logout_redirect_uri:'http://localhost:4200'
   };
 
   userManager;
