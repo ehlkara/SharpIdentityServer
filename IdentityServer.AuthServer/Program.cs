@@ -21,7 +21,8 @@ builder.Services.AddIdentityServer().AddInMemoryApiResources(Config.GetApiResour
     .AddInMemoryIdentityResources(Config.GetIdentityResources())
     //.AddTestUsers(Config.GetUsers().ToList())
     .AddDeveloperSigningCredential()
-    .AddProfileService<CustomProfileService>();
+    .AddProfileService<CustomProfileService>()
+    .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
 
 builder.Services.AddAuthentication()
     .AddGoogle("Google", options =>
@@ -46,7 +47,7 @@ builder.Services.AddAuthentication().AddOpenIdConnect("Apple", "Sign in with App
         options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
         options.Authority = "https://appleid.apple.com";
         options.ClientId = "<YOUR SERVICE ID FROM APPLE>";
-        //options.ClientSecret = GenerateAppleClientSecret(); // Burada, elde ettiðiniz private key'i kullanarak bir client secret oluþturmalýsýnýz
+        //options.ClientSecret = GenerateAppleClientSecret(); // Burada, elde ettiï¿½iniz private key'i kullanarak bir client secret oluï¿½turmalï¿½sï¿½nï¿½z
         options.CallbackPath = "/signin-apple";
         options.ResponseType = "code";
         options.SaveTokens = true;
