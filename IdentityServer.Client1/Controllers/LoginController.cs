@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using IdentityModel.Client;
 using IdentityServer.Client1.Models;
 using Microsoft.AspNetCore.Authentication;
@@ -15,7 +11,7 @@ namespace IdentityServer.Client1.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly IConfiguration _configuration;
+        private IConfiguration _configuration;
 
         public LoginController(IConfiguration configuration)
         {
@@ -34,9 +30,9 @@ namespace IdentityServer.Client1.Controllers
 
             var disco = await client.GetDiscoveryDocumentAsync(_configuration["AuthServerUrl"]);
 
-            if(disco.IsError)
+            if (disco.IsError)
             {
-                // catch error and logging
+                //hata yakalama ve loglama
             }
 
             var password = new PasswordTokenRequest();
@@ -44,32 +40,31 @@ namespace IdentityServer.Client1.Controllers
             password.Address = disco.TokenEndpoint;
             password.UserName = loginViewModel.Email;
             password.Password = loginViewModel.Password;
-            password.ClientId = _configuration["Client-ResourceOwner:ClientId"];
-            password.ClientSecret = _configuration["Client-ResourceOwner:ClientSecret"];
+            password.ClientId = _configuration["ClientResourceOwner:ClientId"];
+            password.ClientSecret = _configuration["ClientResourceOwner:ClientSecret"];
 
             var token = await client.RequestPasswordTokenAsync(password);
 
-            if(token.IsError)
+            if (token.IsError)
             {
-                ModelState.AddModelError("", "Email or password wrong");
+                ModelState.AddModelError("", "Email veya şifreniz yanlış");
                 return View();
-                // catch error and logging
+
+                //hata yakalama ve loglama
             }
 
-            var userInfoRequest = new UserInfoRequest();
+            var userinfoRequest = new UserInfoRequest();
 
-            userInfoRequest.Token = token.AccessToken;
-            userInfoRequest.Address = disco.UserInfoEndpoint;
+            userinfoRequest.Token = token.AccessToken;
+            userinfoRequest.Address = disco.UserInfoEndpoint;
+            var userinfo = await client.GetUserInfoAsync(userinfoRequest);
 
-            var userInfo = await client.GetUserInfoAsync(userInfoRequest);
-
-            if(userInfo.IsError)
+            if (userinfo.IsError)
             {
-                // catch error and logging
+                //hata yakalama ve loglama
             }
 
-            ClaimsIdentity claimsIdentity = new ClaimsIdentity(userInfo.Claims,CookieAuthenticationDefaults.AuthenticationScheme,
-                "name","role");
+            ClaimsIdentity claimsIdentity = new ClaimsIdentity(userinfo.Claims, CookieAuthenticationDefaults.AuthenticationScheme, "name", "role");
 
             ClaimsPrincipal claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
 
@@ -77,10 +72,9 @@ namespace IdentityServer.Client1.Controllers
 
             authenticationProperties.StoreTokens(new List<AuthenticationToken>()
             {
-                new AuthenticationToken {Name = OpenIdConnectParameterNames.AccessToken, Value = token.AccessToken},
-                new AuthenticationToken {Name = OpenIdConnectParameterNames.RefreshToken, Value = token.RefreshToken},
-                new AuthenticationToken {Name = OpenIdConnectParameterNames.ExpiresIn, Value =
-                DateTime.UtcNow.AddSeconds(token.ExpiresIn).ToString("O",CultureInfo.InvariantCulture)}
+                      new AuthenticationToken{ Name=OpenIdConnectParameterNames.AccessToken,Value= token.AccessToken},
+                            new AuthenticationToken{ Name=OpenIdConnectParameterNames.RefreshToken,Value= token.RefreshToken},
+                                  new AuthenticationToken{ Name=OpenIdConnectParameterNames.ExpiresIn,Value= DateTime.UtcNow.AddSeconds(token.ExpiresIn).ToString("o", CultureInfo.InvariantCulture)}
             });
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authenticationProperties);

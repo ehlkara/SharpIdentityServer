@@ -6,6 +6,7 @@ using IdentityServer.AuthServer.Seeds;
 using IdentityServer.AuthServer.Services;
 using IdentityServer4;
 using IdentityServer4.EntityFramework.DbContexts;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,22 +24,22 @@ var assemblyName = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
 builder.Services.AddIdentityServer()
     .AddConfigurationStore(opts =>
     {
-        opts.ConfigureDbContext = c => c.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"),
-            sqlopts => sqlopts.MigrationsAssembly(assemblyName));
+        opts.ConfigureDbContext = c => c.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"), sqlopts => sqlopts.MigrationsAssembly(assemblyName));
     })
     .AddOperationalStore(opts =>
     {
-        opts.ConfigureDbContext = c => c.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"),
-            sqlopts => sqlopts.MigrationsAssembly(assemblyName));
+        opts.ConfigureDbContext = c => c.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"), sqlopts => sqlopts.MigrationsAssembly(assemblyName));
     })
     //.AddInMemoryApiResources(Config.GetApiResources())
     //.AddInMemoryApiScopes(Config.GetApiScopes())
     //.AddInMemoryClients(Config.GetClients())
     //.AddInMemoryIdentityResources(Config.GetIdentityResources())
-    //.AddTestUsers(Config.GetUsers().ToList())
+    //      .AddTestUsers(Config.GetUsers().ToList())
     .AddDeveloperSigningCredential()
     .AddProfileService<CustomProfileService>()
     .AddResourceOwnerValidator<ResourceOwnerPasswordValidator>();
+
+
 
 builder.Services.AddAuthentication()
     .AddGoogle("Google", options =>

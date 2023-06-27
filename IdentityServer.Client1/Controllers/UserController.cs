@@ -48,8 +48,8 @@ namespace IdentityServer.Client1.Controllers
 
             RefreshTokenRequest refreshTokenRequest = new RefreshTokenRequest();
 
-            refreshTokenRequest.ClientId = _config["Client1Mvc:ClientId"];
-            refreshTokenRequest.ClientSecret = _config["Client1Mvc:ClientSecret"];
+            refreshTokenRequest.ClientId = _config["Client-ResourceOwner:ClientId"];
+            refreshTokenRequest.ClientSecret = _config["Client-ResourceOwner:ClientSecret"];
             refreshTokenRequest.RefreshToken = refreshToken;
             refreshTokenRequest.Address = disco.TokenEndpoint;
 
