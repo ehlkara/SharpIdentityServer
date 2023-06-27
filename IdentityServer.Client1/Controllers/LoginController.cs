@@ -51,6 +51,8 @@ namespace IdentityServer.Client1.Controllers
 
             if(token.IsError)
             {
+                ModelState.AddModelError("", "Email or password wrong");
+                return View();
                 // catch error and logging
             }
 

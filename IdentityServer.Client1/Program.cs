@@ -11,9 +11,10 @@ builder.Services.AddScoped<IApiResourceHttpClient, ApiResourceHttpClient>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = "Cookies";
-    options.DefaultChallengeScheme = "oidc";
+    //options.DefaultChallengeScheme = "oidc";
 }).AddCookie("Cookies", opts =>
 {
+    opts.LoginPath = "/Login/Index";
     opts.AccessDeniedPath = "/Home/AccessDenied";
 }).AddGoogle("Google", options =>
 {
@@ -33,30 +34,31 @@ builder.Services.AddAuthentication(options =>
     options.ClientSecret = "f1a459e448da15cd954fcad271faa1f5";
     options.CallbackPath = "/signin-facebook";
     options.SaveTokens = true;
-}).AddOpenIdConnect("oidc", opts =>
-{
-    opts.SignInScheme = "Cookies";
-    opts.Authority = "https://localhost:7183";
-    opts.ClientId = "Client1-Mvc";
-    opts.ClientSecret = "secret";
-    opts.ResponseType = "code id_token";
-    opts.GetClaimsFromUserInfoEndpoint = true;
-    opts.SaveTokens = true;
-    opts.Scope.Add("api1.read");
-    opts.Scope.Add("offline_access");
-    opts.Scope.Add("CountryAndCity");
-    opts.Scope.Add("Roles");
-    opts.Scope.Add("email");
-    opts.ClaimActions.MapUniqueJsonKey("country", "country");
-    opts.ClaimActions.MapUniqueJsonKey("city", "city");
-    opts.ClaimActions.MapUniqueJsonKey("role", "role");
-
-    opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-    {
-        RoleClaimType = "role",
-        NameClaimType = "name",
-    };
 });
+//.AddOpenIdConnect("oidc", opts =>
+//{
+//    opts.SignInScheme = "Cookies";
+//    opts.Authority = "https://localhost:7183";
+//    opts.ClientId = "Client1-Mvc";
+//    opts.ClientSecret = "secret";
+//    opts.ResponseType = "code id_token";
+//    opts.GetClaimsFromUserInfoEndpoint = true;
+//    opts.SaveTokens = true;
+//    opts.Scope.Add("api1.read");
+//    opts.Scope.Add("offline_access");
+//    opts.Scope.Add("CountryAndCity");
+//    opts.Scope.Add("Roles");
+//    opts.Scope.Add("email");
+//    opts.ClaimActions.MapUniqueJsonKey("country", "country");
+//    opts.ClaimActions.MapUniqueJsonKey("city", "city");
+//    opts.ClaimActions.MapUniqueJsonKey("role", "role");
+
+//    opts.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+//    {
+//        RoleClaimType = "role",
+//        NameClaimType = "name",
+//    };
+//});
 
 
 builder.Services.AddControllersWithViews();
