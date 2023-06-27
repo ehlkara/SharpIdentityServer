@@ -1,3 +1,4 @@
+using System.Reflection;
 using IdentityServer.AuthServer;
 using IdentityServer.AuthServer.Models;
 using IdentityServer.AuthServer.Repository;
@@ -15,7 +16,20 @@ builder.Services.AddDbContext<CustomDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"));
 });
 
-builder.Services.AddIdentityServer().AddInMemoryApiResources(Config.GetApiResource())
+var assemblyName = typeof(Program).GetTypeInfo().Assembly.GetName().Name;
+
+builder.Services.AddIdentityServer()
+    .AddConfigurationStore(opts =>
+    {
+        opts.ConfigureDbContext = c => c.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"),
+            sqlopts => sqlopts.MigrationsAssembly(assemblyName));
+    })
+    .AddOperationalStore(opts =>
+    {
+        opts.ConfigureDbContext = c => c.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"),
+            sqlopts => sqlopts.MigrationsAssembly(assemblyName));
+    })
+    .AddInMemoryApiResources(Config.GetApiResource())
     .AddInMemoryApiScopes(Config.GetApiScopes())
     .AddInMemoryClients(Config.GetClients())
     .AddInMemoryIdentityResources(Config.GetIdentityResources())
