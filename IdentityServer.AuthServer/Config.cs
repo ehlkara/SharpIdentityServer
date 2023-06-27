@@ -158,6 +158,25 @@ namespace IdentityServer.AuthServer
                     AllowedCorsOrigins={"http://localhost:4200"},
                     PostLogoutRedirectUris={ "http://localhost:4200" }
                 },
+
+                new Client()
+                {
+                    ClientId = "Client1-ResourceOwner-Mvc",
+                    RequirePkce = false,
+                    ClientName = "Client1 app application",
+                    ClientSecrets = new[] {new Secret("secret".Sha256())},
+                    AllowedGrantTypes= GrantTypes.ResourceOwnerPassword,
+                    AllowedScopes= {IdentityServerConstants.StandardScopes.Email,IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,"api1.read",
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
+                        "CountryAndCity","Roles"
+                    },
+                    AccessTokenLifetime = 2*60*60,
+                    AllowOfflineAccess = true,
+                    RefreshTokenUsage = TokenUsage.ReUse,
+                    RefreshTokenExpiration = TokenExpiration.Absolute,
+                    AbsoluteRefreshTokenLifetime = (int)(DateTime.Now.AddDays(60) - DateTime.Now).TotalSeconds,
+                },
             };
         }
     }
