@@ -27,7 +27,10 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/oidc-client/dist/oidc-client.min.js"
+            ],
+            "allowedCommonJsDependencies": ["oidc-client"]
           },
           "configurations": {
             "production": {
@@ -94,5 +97,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "8cce3d66-5dc9-429a-927f-7c4c09cae3bf"
   }
 }
