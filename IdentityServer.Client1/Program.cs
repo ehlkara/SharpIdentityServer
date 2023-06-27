@@ -19,8 +19,8 @@ builder.Services.AddAuthentication(options =>
 {
     options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
 
-    options.ClientId = "727823634857-qqk9poohpoihrebuhbk1js76hp09cc82.apps.googleusercontent.com";
-    options.ClientSecret = "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";
+    options.ClientId = "343659810142-gkdjq66118r6696sshij2k0kr7cau9m2.apps.googleusercontent.com";
+    options.ClientSecret = "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";
     options.Scope.Add("CountryAndCity");
     options.Scope.Add("offline_access");
     options.ClaimActions.MapUniqueJsonKey("country", "country");
