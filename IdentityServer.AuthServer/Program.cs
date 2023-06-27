@@ -31,10 +31,10 @@ builder.Services.AddIdentityServer()
         opts.ConfigureDbContext = c => c.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"),
             sqlopts => sqlopts.MigrationsAssembly(assemblyName));
     })
-    .AddInMemoryApiResources(Config.GetApiResources())
-    .AddInMemoryApiScopes(Config.GetApiScopes())
-    .AddInMemoryClients(Config.GetClients())
-    .AddInMemoryIdentityResources(Config.GetIdentityResources())
+    //.AddInMemoryApiResources(Config.GetApiResources())
+    //.AddInMemoryApiScopes(Config.GetApiScopes())
+    //.AddInMemoryClients(Config.GetClients())
+    //.AddInMemoryIdentityResources(Config.GetIdentityResources())
     //.AddTestUsers(Config.GetUsers().ToList())
     .AddDeveloperSigningCredential()
     .AddProfileService<CustomProfileService>()
@@ -87,9 +87,10 @@ if (!app.Environment.IsDevelopment())
 using (var serviceScope = app.Services.CreateScope())
 {
     var services = serviceScope.ServiceProvider;
+
     var context = services.GetRequiredService<ConfigurationDbContext>();
 
-    IdentityServerSeedData.Seed(context);
+    await IdentityServerSeedData.Seed(context);
 }
 
 app.UseHttpsRedirection();
