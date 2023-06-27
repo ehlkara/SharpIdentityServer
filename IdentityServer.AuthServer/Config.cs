@@ -7,7 +7,7 @@ namespace IdentityServer.AuthServer
 {
     public static class Config
     {
-        public static IEnumerable<ApiResource> GetApiResource()
+        public static IEnumerable<ApiResource> GetApiResources()
         {
             return new List<ApiResource>()
             {

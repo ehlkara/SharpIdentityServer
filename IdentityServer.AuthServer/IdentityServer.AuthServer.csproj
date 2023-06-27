@@ -22,6 +22,10 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Seeds\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Seeds\" />
+  </ItemGroup>
 </Project>

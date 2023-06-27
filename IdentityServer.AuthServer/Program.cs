@@ -2,8 +2,10 @@ using System.Reflection;
 using IdentityServer.AuthServer;
 using IdentityServer.AuthServer.Models;
 using IdentityServer.AuthServer.Repository;
+using IdentityServer.AuthServer.Seeds;
 using IdentityServer.AuthServer.Services;
 using IdentityServer4;
+using IdentityServer4.EntityFramework.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +31,7 @@ builder.Services.AddIdentityServer()
         opts.ConfigureDbContext = c => c.UseSqlServer(builder.Configuration.GetConnectionString("LocalDb"),
             sqlopts => sqlopts.MigrationsAssembly(assemblyName));
     })
-    .AddInMemoryApiResources(Config.GetApiResource())
+    .AddInMemoryApiResources(Config.GetApiResources())
     .AddInMemoryApiScopes(Config.GetApiScopes())
     .AddInMemoryClients(Config.GetClients())
     .AddInMemoryIdentityResources(Config.GetIdentityResources())
@@ -80,6 +82,14 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
+}
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var services = serviceScope.ServiceProvider;
+    var context = services.GetRequiredService<ConfigurationDbContext>();
+
+    IdentityServerSeedData.Seed(context);
 }
 
 app.UseHttpsRedirection();
