@@ -28,7 +28,12 @@ namespace IdentityServer.Client1.Controllers
         {
             var client = new HttpClient();
 
-            var disco = await client.GetDiscoveryDocumentAsync(_configuration["AuthServerUrl"]);
+            //var disco = await client.GetDiscoveryDocumentAsync(_configuration["AuthServerUrl"]);
+            var disco = await client.GetDiscoveryDocumentAsync(new DiscoveryDocumentRequest
+            {
+                Address = _configuration["AuthServerUrl"],
+                Policy = new DiscoveryPolicy { RequireHttps = false }
+            });
 
             if (disco.IsError)
             {
